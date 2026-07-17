@@ -4,8 +4,9 @@ export const site = {
   groom: "Asadulloh",
   bride: "Shahodat",
   // Marosim ma'lumotlari
-  dateISO: "2026-08-01T18:00:00+05:00",
-  dateText: "1-avgust 2026 · 18:00",
+  dateISO: "2026-08-01T17:00:00+05:00",
+  dateText: "1-avgust 2026 · 17:00",
+  timeText: "17:00",
   venue: "Orzu To'yxonasi",
   venueAddress: "Farg'ona viloyati, Bog'dod tumani, II Bog'dod MFY",
   locale: "uz_UZ",

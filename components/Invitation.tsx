@@ -162,7 +162,7 @@ export default function Invitation() {
               <div className="drow">
                 <div className="side">SHANBA</div>
                 <div className="big">1</div>
-                <div className="side">18:00</div>
+                <div className="side">{site.timeText}</div>
               </div>
               <div className="dyear">2026</div>
             </div>
@@ -248,7 +248,7 @@ export default function Invitation() {
             </div>
             <div className="vtime">
               <span />
-              1-AVGUST · SOAT 18:00 DAN
+              {`1-AVGUST · SOAT ${site.timeText} DAN`}
               <span />
             </div>
             <div className="map">
@@ -298,7 +298,7 @@ export default function Invitation() {
             </div>
             <div className="cdate">
               <span />
-              1-AVGUST 2026 · 18:00
+              {`1-AVGUST 2026 · ${site.timeText}`}
               <span />
             </div>
             <p className="thx">

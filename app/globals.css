@@ -1,7 +1,9 @@
 /* Taklifnoma — global styles (migrated from static HTML) */
 :root{--cream:#efe9db;--olive:#4a543d;--olive-d:#3c452f;--gold:#c3a24e;--gold-d:#a2853f;--gold-l:#e7d6ab;--muted:#8a8470;--line:#e0d7c1}
 *{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
+/* Har bir section = bitta to'liq sahifa. mandatory + snap-stop:always =>
+   ozgina scroll ham keyingi sectionni to'liq ekranga olib keladi. */
+html{scroll-snap-type:y mandatory}
 body{font-family:var(--font-cormorant),serif;color:var(--olive);background:#efe9db;overflow-x:hidden}
 body.locked{overflow:hidden;height:100vh;height:100svh}
 .bg-pattern{position:fixed;inset:0;z-index:0;opacity:.12;pointer-events:none;filter:saturate(.7);
@@ -23,10 +25,10 @@ body.locked{overflow:hidden;height:100vh;height:100svh}
 .wpetals{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:2}
 .wpetal{position:absolute;top:-6%;width:9px;height:9px;background:var(--gold-l);opacity:.5;border-radius:150% 0 150% 0;animation:fall linear infinite}
 @keyframes fall{0%{transform:translateY(-6vh) rotate(0)}100%{transform:translateY(108vh) rotate(360deg)}}
-.flourish{width:min(58vw,260px);height:auto;display:block;margin:0 auto;opacity:.95}
+.flourish{width:min(58cqw,260px);height:auto;display:block;margin:0 auto;opacity:.95}
 .flourish.bottom{margin-top:22px;transform:rotate(180deg)}
-.wbig{font-family:var(--font-pinyon),cursive;font-size:clamp(32px,8vw,64px);color:var(--olive-d);line-height:1.2;margin:2px 0 4px;padding:.08em .12em;text-shadow:0 6px 24px rgba(120,95,55,.12)}
-.wlead{font-style:italic;font-size:clamp(18px,3.4vw,24px);color:var(--olive);line-height:1.85;max-width:540px;margin:14px auto 0}
+.wbig{font-family:var(--font-pinyon),cursive;font-size:clamp(32px,8cqw,64px);color:var(--olive-d);line-height:1.2;margin:2px 0 4px;padding:.08em .12em;text-shadow:0 6px 24px rgba(120,95,55,.12)}
+.wlead{font-style:italic;font-size:clamp(18px,3.4cqw,24px);color:var(--olive);line-height:1.85;max-width:540px;margin:14px auto 0}
 
 /* CURTAIN */
 #intro{position:fixed;inset:0;z-index:100;display:flex;justify-content:center;align-items:center;text-align:center;overflow:hidden;padding:0 18px;transition:visibility .2s 1.5s}
@@ -65,11 +67,15 @@ body.opened .curtain.right{transform:translateX(101%)}
 body.opened .i-content{opacity:0}
 
 /* SECTIONS */
+/* container-type => ichkaridagi o'lchamlar (cqw) oyna emas, shu 500px lik
+   ustun kengligiga nisbatan hisoblanadi. Aks holda kata ekranlarda shrift
+   ustunga sig'may, section balandlashib "bir sahifa" dizayni buziladi. */
 .content{position:relative;z-index:1;opacity:0;transition:opacity 1s .7s;
+  container-type:inline-size;
   max-width:500px;margin:0 auto;background:rgba(250,246,238,.35);
   box-shadow:0 0 0 1px rgba(200,170,110,.14),0 0 70px rgba(150,120,70,.12)}
 body.opened .content{opacity:1}
-section{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:64px 30px;position:relative;overflow:hidden}
+section{min-height:100vh;min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:64px 30px;position:relative;overflow:hidden}
 /* scroll-triggered staggered reveal */
 .reveal>*{opacity:0;transform:translateY(30px);transition:opacity .85s cubic-bezier(.2,.7,.2,1),transform .85s cubic-bezier(.2,.7,.2,1)}
 .reveal.in>*{opacity:1;transform:none}
@@ -89,29 +95,29 @@ section{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;ju
 .reveal.in .timer .cell:nth-child(3){transition-delay:.7s}
 .reveal.in .timer .cell:nth-child(4){transition-delay:.8s}
 .eyebrow{letter-spacing:5px;text-transform:uppercase;font-size:12px;color:var(--gold-d);margin-bottom:10px}
-.stitle{font-size:clamp(30px,6vw,50px);font-weight:500;color:var(--olive-d);line-height:1.1;margin-bottom:14px}
+.stitle{font-size:clamp(30px,6cqw,50px);font-weight:500;color:var(--olive-d);line-height:1.1;margin-bottom:14px}
 .divider{width:54px;height:1px;background:var(--gold);margin:0 auto 24px;position:relative}
 .divider::before{content:"\2766";position:absolute;top:-13px;left:50%;transform:translateX(-50%);color:var(--gold);font-size:16px;background:#efe9db;padding:0 8px}
 .lead{max-width:560px;margin:0 auto;color:var(--olive);font-weight:400;line-height:1.9;font-size:19px}
 .hero .inv{position:relative;z-index:4;max-width:560px}
-.bism{font-family:var(--font-amiri),serif;font-size:clamp(23px,4.6vw,32px);color:var(--olive-d);margin-bottom:22px;line-height:1.7}
-.invite{letter-spacing:1.5px;font-size:clamp(18px,3.3vw,23px);color:var(--olive);line-height:1.5;font-weight:500}
+.bism{font-family:var(--font-amiri),serif;font-size:clamp(23px,4.6cqw,32px);color:var(--olive-d);margin-bottom:22px;line-height:1.7}
+.invite{letter-spacing:1.5px;font-size:clamp(18px,3.3cqw,23px);color:var(--olive);line-height:1.5;font-weight:500}
 .h-names{margin:12px 0 4px}
-.h-names .n{font-family:var(--font-pinyon),cursive;font-size:clamp(34px,11vw,90px);color:var(--olive);line-height:1.28;padding:.04em .1em}
-.h-names .amp{font-size:clamp(26px,5vw,34px);color:var(--olive);margin:2px 0;font-weight:500}
+.h-names .n{font-family:var(--font-pinyon),cursive;font-size:clamp(34px,11cqw,90px);color:var(--olive);line-height:1.28;padding:.04em .1em}
+.h-names .amp{font-size:clamp(26px,5cqw,34px);color:var(--olive);margin:2px 0;font-weight:500}
 .dateblk{margin:22px 0 14px}
-.dmonth{letter-spacing:5px;font-size:clamp(17px,3.2vw,21px);color:var(--olive);font-weight:500}
+.dmonth{letter-spacing:5px;font-size:clamp(17px,3.2cqw,21px);color:var(--olive);font-weight:500}
 .drow{display:flex;align-items:center;justify-content:center;gap:22px;margin:4px 0}
-.drow .side{letter-spacing:3px;font-size:clamp(12px,2.5vw,15px);color:var(--olive);min-width:90px}
-.drow .big{font-size:clamp(48px,11vw,72px);color:var(--olive-d);font-weight:500;padding:0 20px;position:relative;line-height:1}
+.drow .side{letter-spacing:3px;font-size:clamp(12px,2.5cqw,15px);color:var(--olive);min-width:90px}
+.drow .big{font-size:clamp(48px,11cqw,72px);color:var(--olive-d);font-weight:500;padding:0 20px;position:relative;line-height:1}
 .drow .big::before,.drow .big::after{content:"";position:absolute;top:14%;bottom:14%;width:1.5px;background:var(--olive)}
 .drow .big::before{left:0}.drow .big::after{right:0}
-.dyear{letter-spacing:4px;font-size:clamp(19px,3.8vw,25px);color:var(--olive);font-weight:500}
-.addr{font-size:clamp(15px,2.7vw,18px);color:var(--olive);line-height:1.5;letter-spacing:.5px}
-.follow{font-family:var(--font-pinyon),cursive;font-size:clamp(26px,5vw,34px);color:var(--olive);margin-top:12px;line-height:1.35;padding:.05em .1em}
+.dyear{letter-spacing:4px;font-size:clamp(19px,3.8cqw,25px);color:var(--olive);font-weight:500}
+.addr{font-size:clamp(15px,2.7cqw,18px);color:var(--olive);line-height:1.5;letter-spacing:.5px}
+.follow{font-family:var(--font-pinyon),cursive;font-size:clamp(26px,5cqw,34px);color:var(--olive);margin-top:12px;line-height:1.35;padding:.05em .1em}
 .scrollcue{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);color:var(--gold);font-size:22px;z-index:4;animation:bob 1.8s infinite}
 @keyframes bob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,8px)}}
-.rings-img{width:min(64vw,270px);height:auto;display:block;margin:6px auto 4px;
+.rings-img{width:min(64cqw,270px);height:auto;display:block;margin:6px auto 4px;
   filter:drop-shadow(0 16px 18px rgba(120,90,30,.22));animation:hover 4.5s ease-in-out infinite}
 @keyframes hover{0%,100%{transform:translateY(0)}25%{transform:translateY(-12px)}75%{transform:translateY(12px)}}
 .timer{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:4px}
@@ -119,16 +125,18 @@ section{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;ju
   background:rgba(255,255,255,.2);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);box-shadow:0 8px 24px rgba(120,105,60,.05)}
 .cell .n{font-family:var(--font-cormorant),serif;font-size:46px;color:var(--olive-d);line-height:1}
 .cell .l{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:7px}
-.panel{position:relative;z-index:3;max-width:660px;width:100%;padding:52px 44px;
+.panel{position:relative;z-index:3;max-width:660px;width:100%;padding:34px 30px;
   background:rgba(255,253,247,.55);backdrop-filter:blur(4px);border-radius:6px;box-shadow:0 26px 60px rgba(150,120,70,.14)}
 .panel::before{content:"";position:absolute;inset:13px;border:1px solid var(--gold-l);border-radius:4px;pointer-events:none}
 .panel::after{content:"";position:absolute;inset:19px;border:1px solid rgba(195,162,78,.35);border-radius:2px;pointer-events:none}
-.vname{font-family:var(--font-pinyon),cursive;font-size:clamp(30px,8.5vw,78px);color:var(--olive-d);line-height:1.22;padding:.05em .1em;text-shadow:0 6px 24px rgba(120,95,55,.12)}
-.vsub{font-size:clamp(16px,3vw,20px);color:var(--olive);line-height:1.7;margin-top:6px}
+.vname{font-family:var(--font-pinyon),cursive;font-size:clamp(30px,8.5cqw,78px);color:var(--olive-d);line-height:1.22;padding:.05em .1em;text-shadow:0 6px 24px rgba(120,95,55,.12)}
+.vsub{font-size:clamp(16px,3cqw,20px);color:var(--olive);line-height:1.7;margin-top:6px}
 .vtime{display:inline-flex;align-items:center;gap:10px;margin-top:12px;color:var(--gold-d);letter-spacing:2px;font-size:13px;text-transform:uppercase}
 .vtime span{height:1px;width:24px;background:var(--gold)}
 .map{width:100%;max-width:600px;margin:26px auto 0;border:1px solid var(--line);border-radius:16px;overflow:hidden;height:min(46vh,380px)}
-.panel .map{margin-top:24px;height:min(36vh,290px);border-color:var(--gold-l)}
+/* svh => section balandligi bilan bir xil asos (mobil brauzer paneli hisobga
+   olinadi), shunda xarita hech qaysi ekranda sectionni oshirib yubormaydi. */
+.panel .map{margin-top:18px;height:min(24svh,190px);border-color:var(--gold-l)}
 .map iframe{width:100%;height:100%;border:0;filter:saturate(.9)}
 .btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:22px}
 .btn{display:inline-block;padding:13px 32px;border:1px solid var(--gold);color:var(--gold-d);border-radius:30px;text-decoration:none;letter-spacing:2px;text-transform:uppercase;font-size:12px;transition:.35s;background:transparent}
@@ -136,12 +144,35 @@ section{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;ju
 .btn.solid{background:var(--gold);color:#fff}.btn.solid:hover{background:var(--gold-d)}
 /* CLOSING (Tashakkur) */
 .closing .eyebrow{margin-bottom:24px}
-.cbig{font-family:var(--font-pinyon),cursive;font-size:clamp(42px,13vw,120px);color:var(--olive-d);line-height:1.2;padding:.08em .12em;text-shadow:0 8px 26px rgba(120,95,55,.14)}
-.cnames{font-family:var(--font-pinyon),cursive;font-size:clamp(28px,7vw,52px);color:var(--olive);margin-top:6px;line-height:1.25;padding:.05em .1em}
+.cbig{font-family:var(--font-pinyon),cursive;font-size:clamp(42px,13cqw,120px);color:var(--olive-d);line-height:1.2;padding:.08em .12em;text-shadow:0 8px 26px rgba(120,95,55,.14)}
+.cnames{font-family:var(--font-pinyon),cursive;font-size:clamp(28px,7cqw,52px);color:var(--olive);margin-top:6px;line-height:1.25;padding:.05em .1em}
 .cnames .amp{color:var(--gold);margin:0 .2em}
 @media(max-width:560px){.cnames .nm,.cnames .amp{display:block;line-height:1.12}}
 .cdate{display:inline-flex;align-items:center;gap:10px;margin-top:10px;color:var(--gold-d);letter-spacing:3px;font-size:13px}
 .cdate span{height:1px;width:24px;background:var(--gold)}
-.closing .thx{font-style:italic;max-width:460px;margin:16px auto 0;color:var(--olive);line-height:1.8;font-size:clamp(16px,3vw,20px)}
+.closing .thx{font-style:italic;max-width:460px;margin:16px auto 0;color:var(--olive);line-height:1.8;font-size:clamp(16px,3cqw,20px)}
 .closing .heart{margin-top:18px;color:var(--gold);font-size:34px;animation:beat 1.7s ease-in-out infinite}
 @keyframes beat{0%,100%{transform:scale(1)}50%{transform:scale(1.16)}}
+
+/* Past bo'yli ekranlar (iPhone SE va h.k.): "bir section = bir sahifa"
+   dizayni buzilmasligi uchun har bir section ekranga to'liq sig'ishi shart —
+   aks holda mandatory snap kontentning pastini ko'rsatmay qo'yadi. */
+@media(max-height:720px){
+  section{padding:36px 24px}
+  .rings-img{width:min(46cqw,180px);margin:2px auto}
+  .timer{gap:9px}
+  .cell{min-width:72px;padding:12px 8px;border-radius:11px}
+  .cell .n{font-size:34px}
+  .cell .l{margin-top:4px}
+  .divider{margin-bottom:14px}
+  .panel{padding:26px 22px}
+  .panel::before{inset:9px}
+  .panel::after{inset:14px}
+  .panel .map{height:min(24vh,165px);margin-top:14px}
+  .btns{margin-top:14px;gap:9px}
+  .btn{padding:10px 22px}
+  .flourish{width:min(46cqw,190px)}
+  .flourish.bottom{margin-top:12px}
+  .closing .thx{margin-top:10px}
+  .closing .heart{margin-top:10px;font-size:28px}
+}
