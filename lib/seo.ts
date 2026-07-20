@@ -2,7 +2,7 @@
 export const site = {
   url: "https://asadullohe.uz",
   groom: "Asadulloh",
-  bride: "Shahodat",
+  bride: "Shahodatxon",
   // Marosim ma'lumotlari
   dateISO: "2026-08-01T17:00:00+05:00",
   dateText: "1-avgust 2026 · 17:00",
@@ -26,7 +26,7 @@ export const keywords = [
   "wedding invitation",
   site.groom,
   site.bride,
-  "Asadulloh va Shahodat",
+  "Asadulloh va Shahodatxon",
   "Farg'ona to'y",
   "Bog'dod tumani",
   "Orzu to'yxonasi",

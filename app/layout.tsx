@@ -1,5 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Amiri, Cormorant_Garamond, Pinyon_Script } from "next/font/google";
+import {
+  Amiri,
+  Cormorant_Garamond,
+  Pinyon_Script,
+  Playfair_Display,
+} from "next/font/google";
 import { site, title, description, keywords } from "@/lib/seo";
 import "./globals.css";
 
@@ -23,6 +28,14 @@ const amiri = Amiri({
   weight: ["400", "700"],
   display: "swap",
   variable: "--font-amiri",
+});
+
+// Sanoqli kunlar raqamlari uchun — kontrastli nafis display serif.
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["500", "600"],
+  display: "swap",
+  variable: "--font-playfair",
 });
 
 export const metadata: Metadata = {
@@ -89,7 +102,7 @@ export default function RootLayout({
   return (
     <html
       lang="uz"
-      className={`${cormorant.variable} ${pinyon.variable} ${amiri.variable}`}
+      className={`${cormorant.variable} ${pinyon.variable} ${amiri.variable} ${playfair.variable}`}
     >
       <body className="locked">
         {children}
