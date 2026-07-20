@@ -70,6 +70,8 @@ export const viewport: Viewport = {
   themeColor: "#4a543d",
   width: "device-width",
   initialScale: 1,
+  // env(safe-area-inset-*) ishlashi uchun — notch/home indikator/Safari paneli hisobga olinadi.
+  viewportFit: "cover",
 };
 
 // schema.org Event — qidiruv tizimlari uchun boy natija (rich result)

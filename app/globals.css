@@ -5,7 +5,7 @@
    ozgina scroll ham keyingi sectionni to'liq ekranga olib keladi. */
 html{scroll-snap-type:y mandatory}
 body{font-family:var(--font-cormorant),serif;color:var(--olive);background:#efe9db;overflow-x:hidden}
-body.locked{overflow:hidden;height:100vh;height:100svh}
+body.locked{overflow:hidden;height:100vh;height:100dvh}
 .bg-pattern{position:fixed;inset:0;z-index:0;opacity:.12;pointer-events:none;filter:saturate(.7);
   background-image:url("/bg-pattern.png");background-repeat:repeat;background-size:400px 400px}
 .bg-glow{position:fixed;inset:0;z-index:0;pointer-events:none;
@@ -73,7 +73,7 @@ body.opened .curtain.right{transform:translateX(101%)}
 body.opened .i-content{opacity:0}
 
 /* MUSIQA TUGMASI — faqat taklifnoma ochilgach ko'rinadi */
-.music{position:fixed;right:16px;bottom:16px;z-index:50;width:44px;height:44px;border-radius:50%;
+.music{position:fixed;right:calc(16px + env(safe-area-inset-right));bottom:calc(18px + env(safe-area-inset-bottom));z-index:50;width:44px;height:44px;border-radius:50%;
   border:1px solid var(--gold);background:rgba(255,253,247,.72);backdrop-filter:blur(6px);
   -webkit-backdrop-filter:blur(6px);color:var(--gold-d);cursor:pointer;
   display:flex;align-items:center;justify-content:center;
@@ -98,7 +98,7 @@ body.opened .music{opacity:1;visibility:visible;pointer-events:auto}
   max-width:500px;margin:0 auto;background:rgba(250,246,238,.35);
   box-shadow:0 0 0 1px rgba(200,170,110,.14),0 0 70px rgba(150,120,70,.12)}
 body.opened .content{opacity:1}
-section{min-height:100vh;min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:64px 30px;position:relative;overflow:hidden}
+section{min-height:100vh;min-height:100dvh;scroll-snap-align:start;scroll-snap-stop:always;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:calc(48px + env(safe-area-inset-top)) 30px calc(48px + env(safe-area-inset-bottom));position:relative;overflow:hidden}
 /* scroll-triggered staggered reveal */
 .reveal>*{opacity:0;transform:translateY(30px);transition:opacity .85s cubic-bezier(.2,.7,.2,1),transform .85s cubic-bezier(.2,.7,.2,1)}
 .reveal.in>*{opacity:1;transform:none}
@@ -121,14 +121,14 @@ section{min-height:100vh;min-height:100svh;scroll-snap-align:start;scroll-snap-s
 .stitle{font-family:var(--font-playfair),serif;font-size:clamp(30px,6cqw,50px);font-weight:600;color:var(--olive-d);line-height:1.1;margin-bottom:14px}
 .lead{max-width:560px;margin:0 auto;color:var(--olive);font-weight:400;line-height:1.9;font-size:19px}
 .hero .inv{position:relative;z-index:4;max-width:560px}
-.bism{font-family:var(--font-amiri),serif;font-size:clamp(23px,4.6cqw,32px);color:var(--olive-d);margin-bottom:clamp(16px,4svh,38px);line-height:1.7}
+.bism{font-family:var(--font-amiri),serif;font-size:clamp(23px,4.6cqw,32px);color:var(--olive-d);margin-bottom:clamp(14px,4dvh,38px);line-height:1.7}
 .invite{letter-spacing:.3px;font-size:clamp(15px,2.9cqw,19px);color:var(--olive);line-height:1.6;font-weight:500;max-width:440px;margin:0 auto}
 .invite .salom{display:block;font-size:clamp(19px,3.6cqw,25px);color:var(--olive-d);letter-spacing:.5px;margin-bottom:2px}
 .invite .greet{display:block;margin-bottom:3px}
-.h-names{margin:clamp(20px,6.5svh,54px) 0 clamp(6px,1.6svh,14px)}
+.h-names{margin:clamp(16px,6dvh,54px) 0 clamp(6px,1.5dvh,14px)}
 .h-names .n{font-family:var(--font-pinyon),cursive;font-size:clamp(34px,11cqw,90px);color:var(--olive);line-height:1.28;padding:.04em .1em}
 .h-names .amp{font-size:clamp(26px,5cqw,34px);color:var(--olive);margin:2px 0;font-weight:500}
-.dateblk{margin:clamp(20px,6svh,50px) 0 clamp(12px,3svh,24px)}
+.dateblk{margin:clamp(16px,5.5dvh,50px) 0 clamp(10px,2.6dvh,24px)}
 .dmonth{letter-spacing:5px;font-size:clamp(17px,3.2cqw,21px);color:var(--olive);font-weight:500}
 .drow{display:flex;align-items:center;justify-content:center;gap:22px;margin:4px 0}
 .drow .side{letter-spacing:3px;font-size:clamp(12px,2.5cqw,15px);color:var(--olive);min-width:90px}
