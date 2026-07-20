@@ -2,7 +2,7 @@
 
 import { useActionState, useState } from "react";
 import { submitRsvp } from "@/app/actions";
-import { initialRsvpState } from "@/lib/rsvp";
+import { initialRsvpState, type RsvpState } from "@/lib/rsvp";
 
 function StepperIcon({ plus = false }: { plus?: boolean }) {
   return (
@@ -15,7 +15,11 @@ function StepperIcon({ plus = false }: { plus?: boolean }) {
   );
 }
 
-export default function RsvpForm() {
+export default function RsvpForm({
+  initialState = initialRsvpState,
+}: {
+  initialState?: RsvpState;
+}) {
   const [guestName, setGuestName] = useState("");
   const [note, setNote] = useState("");
   const [guestCount, setGuestCount] = useState(1);
@@ -24,7 +28,7 @@ export default function RsvpForm() {
   >("attending");
   const [state, formAction, pending] = useActionState(
     submitRsvp,
-    initialRsvpState,
+    initialState,
   );
 
   if (state.status === "success") {

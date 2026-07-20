@@ -1,8 +1,13 @@
 "use server";
 
-import { headers } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { checkRsvpRateLimit } from "@/lib/rate-limit";
-import type { RsvpState } from "@/lib/rsvp";
+import {
+  getRsvpSuccessState,
+  isRsvpAttendance,
+  RSVP_COOKIE_NAME,
+  type RsvpState,
+} from "@/lib/rsvp";
 import { site } from "@/lib/seo";
 import { escapeTelegramHtml, sendTelegramMessage } from "@/lib/telegram";
 
@@ -17,6 +22,15 @@ export async function submitRsvp(
   _previousState: RsvpState,
   formData: FormData,
 ): Promise<RsvpState> {
+  const cookieStore = await cookies();
+  const submittedAttendance = cookieStore.get(RSVP_COOKIE_NAME)?.value;
+
+  // Shu brauzerdan javob allaqachon yuborilgan bo'lsa, Telegramga dublikat
+  // xabar jo'natmaymiz.
+  if (isRsvpAttendance(submittedAttendance)) {
+    return getRsvpSuccessState(submittedAttendance);
+  }
+
   // Botlar ko'pincha ko'rinmas maydonni ham to'ldiradi. Ularga muvaffaqiyat
   // qaytaramiz, ammo Telegramga xabar yubormaymiz.
   if (cleanText(formData.get("website"))) {
@@ -107,11 +121,14 @@ export async function submitRsvp(
     };
   }
 
-  return {
-    status: "success",
-    message:
-      attending
-        ? "Ajoyib! Javobingiz yetib bordi — sizni intiqlik bilan kutamiz."
-        : "Javobingiz yetib bordi. Xabar berganingiz uchun rahmat.",
-  };
+  const attendance = attending ? "attending" : "not_attending";
+  cookieStore.set(RSVP_COOKIE_NAME, attendance, {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+    maxAge: 60 * 60 * 24 * 180,
+  });
+
+  return getRsvpSuccessState(attendance);
 }

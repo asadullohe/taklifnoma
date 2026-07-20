@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { site } from "@/lib/seo";
 import RsvpForm from "@/components/RsvpForm";
+import type { RsvpState } from "@/lib/rsvp";
 
 // Takrorlanuvchi bezak (SVG) — yuqori va pastki variantlari bor.
 function Flourish({ bottom = false }: { bottom?: boolean }) {
@@ -75,7 +76,11 @@ function fillPetals(box: HTMLElement | null) {
 
 const MUSIC_VOLUME = 0.45;
 
-export default function Invitation() {
+export default function Invitation({
+  initialRsvpState,
+}: {
+  initialRsvpState?: RsvpState;
+}) {
   const [opened, setOpened] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [time, setTime] = useState({ d: "00", h: "00", m: "00", s: "00" });
@@ -430,7 +435,7 @@ export default function Invitation() {
               <h2>Biz bilan bo‘ling</h2>
             </div>
             <div className="rsvp-shell">
-              <RsvpForm />
+              <RsvpForm initialState={initialRsvpState} />
             </div>
           </div>
         </section>
