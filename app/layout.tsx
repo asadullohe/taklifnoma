@@ -86,9 +86,15 @@ const jsonLd = {
   location: {
     "@type": "Place",
     name: site.venue,
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: site.latitude,
+      longitude: site.longitude,
+    },
     address: {
       "@type": "PostalAddress",
       streetAddress: site.venueAddress,
+      addressLocality: "Bog'dod tumani",
       addressRegion: "Farg'ona",
       addressCountry: "UZ",
     },

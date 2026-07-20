@@ -8,7 +8,9 @@ export const site = {
   dateText: "1-avgust 2026 · 17:00",
   timeText: "17:00",
   venue: "Orzu To'yxonasi",
-  venueAddress: "Farg'ona viloyati, Bog'dod tumani, II Bog'dod MFY",
+  venueAddress: "Farg'ona viloyati, Bog'dod tumani, O'zbekiston",
+  latitude: 40.475626,
+  longitude: 71.244631,
   locale: "uz_UZ",
 } as const;
 

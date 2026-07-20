@@ -184,7 +184,7 @@ export default function OpengraphImage() {
               letterSpacing: 1,
             }}
           >
-            {`${site.venue} · Farg'ona, Bog'dod tumani`}
+            {`${site.venue} · ${site.venueAddress}`}
           </div>
         </div>
       </div>

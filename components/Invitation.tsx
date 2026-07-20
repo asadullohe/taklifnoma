@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { site } from "@/lib/seo";
+import RsvpForm from "@/components/RsvpForm";
 
 // Takrorlanuvchi bezak (SVG) — yuqori va pastki variantlari bor.
 function Flourish({ bottom = false }: { bottom?: boolean }) {
@@ -82,6 +83,33 @@ export default function Invitation() {
   const cpetalsRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
   const fadeRef = useRef<number | null>(null);
+
+  // Safari paneli ochilib-yopilganda dvh o'zgarib, snap sectionlar sakramasligi
+  // uchun balandlikni faqat yuklanishda va telefon aylantirilganda yangilaymiz.
+  useEffect(() => {
+    let orientationTimer: number | undefined;
+
+    const setViewportHeight = () => {
+      const height = window.innerHeight;
+      document.documentElement.style.setProperty(
+        "--viewport-height",
+        `${height}px`,
+      );
+      document.documentElement.classList.toggle("short-viewport", height <= 720);
+    };
+
+    const handleOrientationChange = () => {
+      window.clearTimeout(orientationTimer);
+      orientationTimer = window.setTimeout(setViewportHeight, 220);
+    };
+
+    setViewportHeight();
+    window.addEventListener("orientationchange", handleOrientationChange);
+    return () => {
+      window.removeEventListener("orientationchange", handleOrientationChange);
+      window.clearTimeout(orientationTimer);
+    };
+  }, []);
 
   // Brauzer qayta yuklanganda avvalgi scroll pozitsiyasini tiklamasin —
   // taklifnoma doim boshidan boshlansin.
@@ -219,7 +247,7 @@ export default function Invitation() {
         <MusicIcon muted={!playing} />
       </button>
 
-      <div id="intro">
+      <div id="intro" onClick={openInvitation}>
         <div className="curtain left">
           <div className="silk" />
           <div className="sheen" />
@@ -245,12 +273,11 @@ export default function Invitation() {
           <button
             className="lock"
             id="openBtn"
-            onClick={openInvitation}
             aria-label="Taklifnomani ochish"
           >
             🔒
           </button>
-          <div className="hint">Qulfni bosib, taklifnomani oching</div>
+          <div className="hint">Ekranga bosib, taklifnomani oching</div>
         </div>
       </div>
 
@@ -282,9 +309,9 @@ export default function Invitation() {
               <div className="dyear">2026</div>
             </div>
             <div className="addr">
-              Orzu To&apos;yxonasi
+              {site.venue}
               <br />
-              Farg&apos;ona, Bog&apos;dod tumani
+              Farg&apos;ona viloyati, Bog&apos;dod tumani
             </div>
           </div>
           <div className="scrollcue">⌄</div>
@@ -354,11 +381,11 @@ export default function Invitation() {
             <div className="eyebrow" style={{ marginTop: 16 }}>
               Marosim joyi
             </div>
-            <div className="vname">Orzu To&apos;yxonasi</div>
+            <div className="vname">{site.venue}</div>
             <div className="vsub">
               Farg&apos;ona viloyati, Bog&apos;dod tumani
               <br />
-              II Bog&apos;dod MFY
+              O&apos;zbekiston
             </div>
             <div className="vtime">
               <span />
@@ -367,15 +394,15 @@ export default function Invitation() {
             </div>
             <div className="map">
               <iframe
-                src="https://www.google.com/maps?q=Bog'dod+tumani,+Farg'ona,+Uzbekistan&output=embed"
+                src={`https://www.google.com/maps?q=${site.latitude},${site.longitude}&z=16&output=embed`}
                 loading="lazy"
-                title="Orzu To'yxonasi joylashuvi"
+                title={`${site.venue} joylashuvi`}
               />
             </div>
             <div className="btns">
               <a
                 className="btn solid"
-                href="https://maps.google.com/?q=Bog'dod+tumani+Farg'ona"
+                href={`https://www.google.com/maps?q=${site.latitude},${site.longitude}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -383,7 +410,7 @@ export default function Invitation() {
               </a>
               <a
                 className="btn"
-                href="https://yandex.uz/maps/?text=Bog'dod+tumani+Farg'ona"
+                href={`https://yandex.uz/maps/?ll=${site.longitude}%2C${site.latitude}&z=16&pt=${site.longitude},${site.latitude},pm2rdm`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -393,7 +420,22 @@ export default function Invitation() {
           </div>
         </section>
 
-        {/* 5. CLOSING */}
+        {/* 5. RSVP */}
+        <section className="rsvp-section">
+          <div className="flo cl" />
+          <div className="flo cr" />
+          <div className="rsvp-wrap reveal">
+            <div className="rsvp-heading">
+              <div className="eyebrow">Ishtirokingizni tasdiqlang</div>
+              <h2>Biz bilan bo‘ling</h2>
+            </div>
+            <div className="rsvp-shell">
+              <RsvpForm />
+            </div>
+          </div>
+        </section>
+
+        {/* 6. CLOSING */}
         <section className="closing">
           <div className="flo tl" />
           <div className="flo ctr" />
