@@ -132,7 +132,7 @@ section{height:var(--viewport-height);min-height:var(--viewport-height);scroll-s
 .dmonth{letter-spacing:5px;font-size:clamp(17px,3.2cqw,21px);color:var(--olive);font-weight:500}
 .drow{display:flex;align-items:center;justify-content:center;gap:22px;margin:4px 0}
 .drow .side{letter-spacing:3px;font-size:clamp(12px,2.5cqw,15px);color:var(--olive);min-width:90px}
-.drow .big{font-size:clamp(48px,11cqw,72px);color:var(--olive-d);font-weight:500;padding:0 20px;position:relative;line-height:1}
+.drow .big{font-family:var(--font-playfair),serif;font-size:clamp(48px,11cqw,72px);color:var(--olive-d);font-weight:500;font-variant-numeric:lining-nums;padding:0 20px;position:relative;line-height:1}
 .drow .big::before,.drow .big::after{content:"";position:absolute;top:14%;bottom:14%;width:1.5px;background:var(--olive)}
 .drow .big::before{left:0}.drow .big::after{right:0}
 .dyear{letter-spacing:4px;font-size:clamp(19px,3.8cqw,25px);color:var(--olive);font-weight:500}
