@@ -10,12 +10,23 @@ import {
 } from "@/lib/rsvp";
 import { site } from "@/lib/seo";
 import { escapeTelegramHtml, sendTelegramMessage } from "@/lib/telegram";
+import type { ContactState } from "@/lib/contact";
 
 const MAX_NAME_LENGTH = 80;
 const MAX_NOTE_LENGTH = 400;
+const MAX_CONTACT_NOTE_LENGTH = 500;
+const CONTACT_COOKIE_NAME = "contact_inquiry_sent";
+const TELEGRAM_USERNAME_PATTERN = /^(?:@|(?:https?:\/\/)?t\.me\/)[A-Za-z0-9_]{5,32}$/i;
+const PHONE_PATTERN = /^\+?\d{7,15}$/;
 
 function cleanText(value: FormDataEntryValue | null) {
   return typeof value === "string" ? value.trim().replace(/\s+/g, " ") : "";
+}
+
+function isValidContact(value: string) {
+  if (TELEGRAM_USERNAME_PATTERN.test(value)) return true;
+  const normalizedPhone = value.replace(/[\s()-]/g, "");
+  return PHONE_PATTERN.test(normalizedPhone);
 }
 
 export async function submitRsvp(
@@ -131,4 +142,109 @@ export async function submitRsvp(
   });
 
   return getRsvpSuccessState(attendance);
+}
+
+export async function submitContactInquiry(
+  _previousState: ContactState,
+  formData: FormData,
+): Promise<ContactState> {
+  // Botlar ko‘pincha yashirin maydonni ham to‘ldiradi. Soxta yuborishni
+  // muvaffaqiyatli ko‘rsatamiz, ammo Telegramga hech narsa jo‘natmaymiz.
+  if (cleanText(formData.get("company"))) {
+    return {
+      status: "success",
+      message: "Tez orada siz bilan bog‘lanaman.",
+    };
+  }
+
+  const cookieStore = await cookies();
+  if (cookieStore.has(CONTACT_COOKIE_NAME)) {
+    return {
+      status: "error",
+      message: "So‘rovingiz allaqachon yuborilgan. Tez orada siz bilan bog‘lanaman.",
+    };
+  }
+
+  const requestHeaders = await headers();
+  const clientIp =
+    requestHeaders.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    requestHeaders.get("x-real-ip") ||
+    requestHeaders.get("cf-connecting-ip") ||
+    "anonymous";
+  const rateLimit = checkRsvpRateLimit(`contact:${clientIp}`, {
+    limit: 3,
+    windowMs: 10 * 60_000,
+  });
+
+  if (!rateLimit.allowed) {
+    return {
+      status: "error",
+      message: `Juda ko‘p urinish bo‘ldi. ${rateLimit.retryAfterSeconds} soniyadan keyin qayta urinib ko‘ring.`,
+    };
+  }
+
+  const name = cleanText(formData.get("name"));
+  const contact = cleanText(formData.get("contact"));
+  const note = cleanText(formData.get("note"));
+  const fieldErrors: NonNullable<ContactState["fieldErrors"]> = {};
+
+  if (name.length < 2 || name.length > MAX_NAME_LENGTH) {
+    fieldErrors.name = "Ismingizni 2–80 ta belgi bilan kiriting.";
+  }
+
+  if (contact.length > 100 || !isValidContact(contact)) {
+    fieldErrors.contact = "Telefonni +998… yoki Telegramni @username shaklida kiriting.";
+  }
+
+  if (note.length > MAX_CONTACT_NOTE_LENGTH) {
+    fieldErrors.note = "Izoh 500 ta belgidan oshmasligi kerak.";
+  }
+
+  if (Object.keys(fieldErrors).length > 0) {
+    return {
+      status: "error",
+      message: "Iltimos, belgilangan maydonlarni tekshiring.",
+      fieldErrors,
+    };
+  }
+
+  const submittedAt = new Intl.DateTimeFormat("uz-UZ", {
+    dateStyle: "medium",
+    timeStyle: "short",
+    timeZone: "Asia/Tashkent",
+  }).format(new Date());
+  const text = [
+    "💌 <b>Yangi taklifnoma buyurtmasi</b>",
+    "",
+    `<b>Ismi:</b> ${escapeTelegramHtml(name)}`,
+    `<b>Aloqa:</b> ${escapeTelegramHtml(contact)}`,
+    note ? `<b>Izoh:</b> ${escapeTelegramHtml(note)}` : null,
+    `<b>Manba:</b> ${escapeTelegramHtml(site.url)}`,
+    `<b>Yuborildi:</b> ${escapeTelegramHtml(submittedAt)}`,
+  ]
+    .filter(Boolean)
+    .join("\n");
+
+  try {
+    await sendTelegramMessage(text);
+  } catch (error) {
+    console.error("Telegram kontakt so‘rovi ulanish xatosi:", error);
+    return {
+      status: "error",
+      message: "Hozir so‘rovni yuborib bo‘lmadi. Iltimos, yana bir bor urinib ko‘ring.",
+    };
+  }
+
+  cookieStore.set(CONTACT_COOKIE_NAME, "1", {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+    maxAge: 10 * 60,
+  });
+
+  return {
+    status: "success",
+    message: "Rahmat! Tez orada siz bilan bog‘lanaman.",
+  };
 }

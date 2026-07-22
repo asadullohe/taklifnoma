@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { site } from "@/lib/seo";
 import RsvpForm from "@/components/RsvpForm";
+import ContactCta from "@/components/ContactCta";
 import type { RsvpState } from "@/lib/rsvp";
 
 // Takrorlanuvchi bezak (SVG) — yuqori va pastki variantlari bor.
@@ -469,6 +470,7 @@ export default function Invitation({
             </p>
             <div className="heart">♡</div>
             <Flourish bottom />
+            <ContactCta />
           </div>
         </section>
       </div>
